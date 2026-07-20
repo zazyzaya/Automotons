@@ -2,8 +2,8 @@ const REZ = 50;
 let H = 150;
 let W = 300;
 
-const N_TYPES = 5;
-const N_PARTICLES = 2500;
+let animId = null;
+let world = null;
 
 function resizeCanvas(){
     const canvas = document.getElementById('glcanvas');
@@ -50,52 +50,6 @@ function createProgam(gl, vshader, fshader) {
   // If it failed to compile
   console.log(gl.getProgramInfoLog(program));
   gl.deleteProgram(program);
-}
-
-function create2dMesh(resolution) {
-  // Building verts from left to right (-1 to 1)
-  var h_step = 2/resolution;
-  var h_start = -1;
-
-  // Building verts from top down (1 to -1)
-  var v_step = -h_step
-  var v_start = 1;
-
-  // Resolution = how many squares per row
-  // meaning rez 1 requires 2 verts in a row / col
-  var verts_per = resolution+1;
-
-  // Build linspace of vertices
-  var verts = []
-  for (var y=0; y<verts_per; y++) {
-    for (var x=0; x<verts_per; x++) {
-      vx = h_start + (x*h_step);
-      vy = v_start + (y*v_step);
-      verts.push(vx,vy);
-    }
-  }
-
-  // Then tell it the order to use the indices in
-  var indices = []
-  var cnt = 0
-  for (var row=0; row<resolution; row++) {
-    for (var col=0; col<resolution; col++) {
-      start = row*verts_per + col;
-      mid = row*verts_per + col+1;
-      other_mid = (row+1)*verts_per + col;
-      end = (row+1)*verts_per + col+1
-
-      indices.push(start, mid, end, start, other_mid, end);
-      cnt += 6;
-    }
-  }
-
-  return {
-    'verts': verts,
-    'indices': indices,
-    't_cnt': cnt,
-    'v_cnt': verts.length / 2
-  }
 }
 
 function createBuffer(gl, program, name) {
@@ -175,7 +129,28 @@ function get_type_colors(typeTensor, N, numTypes) {
     return colors;
 }
 
+function kill() {
+    // Allow for repeated calls to main() if we reset
+    if (animId !== null) {
+        cancelAnimationFrame(animId);
+        animId = null;
+    }
+
+    // TF cleanup
+    if (world) {
+        if (world.s) world.s.dispose();
+        if (world.v) world.v.dispose();
+        if (world.type) world.type.dispose();
+        if (world.typeAttraction) world.typeAttraction.dispose();
+        if (world.typeSight) world.typeSight.dispose();
+        if (world.attraction && world.attraction.dispose) world.attraction.dispose();
+        if (world.sight && world.sight.dispose) world.sight.dispose();
+    }
+}
+
 function main() {
+    kill();
+
     const canvas = document.getElementById('glcanvas');
     const gl = canvas.getContext('webgl');
 
@@ -203,10 +178,13 @@ function main() {
     const c_buf = gl.createBuffer();
 
     // 4. Instantiate world
-    const world = new World(
+    // Take slices so we preserve increase/decrease n types
+    // without blowing away values and so that values held
+    // in world object are seperate data objects
+    world = new World(
       N_PARTICLES,
-      tf.randomUniform([N_TYPES, N_TYPES], -1, 1),    // Attraction
-      tf.randomUniform([N_TYPES, N_TYPES], 0.01, 0.1) // Sight
+      ATTRACTION.slice([0, 0], [N_TYPES, N_TYPES]),
+      SIGHT.slice([0, 0], [N_TYPES, N_TYPES])
     );
 
     // 5. Setup Position Buffer
@@ -227,7 +205,7 @@ function main() {
     gl.bufferData(gl.ARRAY_BUFFER, initialColors, gl.STATIC_DRAW);
 
     // 7. Start Animation Loop
-    requestAnimationFrame(() => drawFrame(gl, world, p_buf));
+    animId = requestAnimationFrame(() => drawFrame(gl, world, p_buf));
 }
 
 function drawFrame(gl, world, p_buf) {
@@ -245,5 +223,5 @@ function drawFrame(gl, world, p_buf) {
     gl.drawArrays(gl.POINTS, 0, world.N);
 
     // 4. Request next frame
-    requestAnimationFrame(() => drawFrame(gl, world, p_buf));
+    animId = requestAnimationFrame(() => drawFrame(gl, world, p_buf));
 }

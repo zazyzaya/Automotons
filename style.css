@@ -1,12 +1,13 @@
-body { 
-    color: rgb(226, 226, 226); 
-    background-color: rgb(213, 213, 213); 
+body {
+    color: rgb(226, 226, 226);
+    background-color: rgb(213, 213, 213);
 }
 
 body, html {
     height: 100%;
     width: 100%;
     margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 #canvas-container {
@@ -23,4 +24,100 @@ body, html {
     box-sizing: border-box;
     overflow-x: hidden;
     overflow-y: hidden;
+}
+
+#toggles {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: fit-content;
+    padding: 14px 10px;
+    max-height: 80vh;
+    border-radius: 12px;
+    background-color: rgba(178, 205, 255, 0.4);
+    backdrop-filter: blur(8px);
+    color: rgb(54, 54, 54);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 10;
+}
+
+#toggles h4 {
+    margin: 0;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+#all-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Restores the 12px vertical spacing between input rows */
+
+    /* Optional smooth transition for when you add your collapse/unfurl logic! */
+    transition: all 0.3s ease;
+}
+
+#settings-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    user-select: none;
+    -webkit-user-select: none; /* Safari support */
+    cursor: move;              /* Shows draggable cursor hint */
+}
+
+#toggle-icon {
+    position: absolute;
+    left: 0;
+    cursor: pointer;
+    z-index: 2;
+    transition: transform 0.2s ease
+}
+
+#toggle-icon:hover {
+    opacity: 0.7;
+}
+
+.input-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.input-row p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.input-row input {
+    width: 60px;
+    padding: 4px 6px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.input-row button {
+    width: 50%;
+}
+
+#all-inputs.collapsed {
+    display: none;
+}
+
+/* Rotate the chevron icon when collapsed */
+#toggle-icon.collapsed {
+    transform: rotate(-90deg);
 }

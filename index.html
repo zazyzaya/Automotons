@@ -3,14 +3,48 @@
     <head>
         <link rel="stylesheet" href="style.css">
         <meta charset="utf-8" />
-        <title>WebGL Demo</title>
-    </head>
-    <body onload = 'main()'>
-        <canvas id="glcanvas"></canvas>
+        <title>Particle World</title>
         <script src='https://webgl2fundamentals.org/webgl/resources/webgl-utils.js'></script>
         <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    </head>
+    <body onload = 'main(); set_values()'>
+        <div id="toggles">
+            <div id="settings-header">
+                <!-- Minimal line icon (Chevron Down / Dash) -->
+                <svg id="toggle-icon" viewBox="0 0 24 24" width="18" height="18"
+                stroke="currentColor" stroke-width="2.5" fill="none"
+                stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+                <h4>Settings</h4>
+            </div>
+
+            <div id="all-inputs">
+                <div class="input-row">
+                    <p>Num Particles</p>
+                    <input type="text" id="n-particles">
+                </div>
+                <div class="input-row">
+                    <p>Particle Types</p>
+                    <input type="text" id="n-types">
+                </div>
+                <div class="input-row">
+                    <p>Friction</p>
+                    <input type="text" id="friction">
+                </div>
+                <div class="input-row">
+                    <button id="load" onclick="load()">Load</button>
+                    <button id="random" onclick="random()">Randomize</button>
+                </div>
+            </div>
+        </div>
+        <canvas id="glcanvas"></canvas>
+
+        <script src="globals.js"></script>
+        <script src="ui.js"></script>
         <script src="shaders.js"></script>
         <script src="phys.js"></script>
         <script src="graphics.js"></script>
+        <script src="io.js"></script>
     </body>
 </html>

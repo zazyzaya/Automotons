@@ -2,11 +2,6 @@
 /** @type {import('@tensorflow/tfjs')} */
 const tf = window.tf;
 
-const FRICTION = 0.25;
-const TIME = 0.0001;
-const REPEL_DIST = 0.005;
-const MAX_SPEED = 0.005;
-
 /** @typedef {import('@tensorflow/tfjs').Tensor1D} Tensor1D */
 /** @typedef {import('@tensorflow/tfjs').Tensor2D} Tensor2D */
 
@@ -26,11 +21,11 @@ class World {
     constructor(N, attraction, sight) {
         this.N = N;
         this.attraction = attraction;
+        this.sight = sight;
 
         this.s = tf.randomUniform([N, 2]);
         this.v = tf.randomUniform([N, 2], 0, 0.001);
         this.type = tf.randomUniformInt([N], 0, attraction.shape[0]);
-        this.sight = sight;
 
         // How far we can see and how much we attract/repel
         const [typeAtt, typeSight] = tf.tidy(() => {
