@@ -33,7 +33,7 @@ body, html {
     transform: translateY(-50%);
     width: fit-content;
     padding: 14px 10px;
-    max-height: 80vh;
+    max-height: 95vh;
     border-radius: 12px;
     background-color: rgba(178, 205, 255, 0.4);
     backdrop-filter: blur(8px);
@@ -138,17 +138,17 @@ body, html {
 }
 
 .matrix-table-container {
-    width: 100%;             
-    max-width: 200px;        
-    aspect-ratio: 1 / 1;     
-    overflow: auto;          
+    width: 100%;
+    max-width: 200px;
+    aspect-ratio: 1 / 1;
+    overflow: auto;
 }
 
 .matrix-table-container table {
     width: 100%;
     height: 100%;
     border-collapse: collapse;
-    table-layout: fixed;     
+    table-layout: fixed;
 }
 
 .matrix-table-container td {
@@ -157,27 +157,44 @@ body, html {
     vertical-align: middle;
     font-size: 12px;
     padding: 2px;
+    white-space: nowrap;
 }
 
-#button-container {
+.button-container {
     position: sticky;
     bottom: 0;
-    
+
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 8px;
-    padding: 8px; 
-    
-    /* Solid or semi-transparent background so matrix/inputs don't show through under buttons */
+
+    /* Symmetric padding: 8px top, 8px right, 6px bottom, 8px left */
+    padding: 8px 8px 6px 8px;
+
+    /* Hugs the buttons tightly without stretching */
+    max-width: 194px;
+    width: fit-content;
+    align-self: center;
+
     z-index: 5;
     background-color: rgba(255, 255, 255, 0.4);
-    border-radius: 6px; 
+    border-radius: 6px;
+    box-sizing: border-box;
 }
 
-.action-buttons button {
-    flex: 1;
-    padding: 6px 12px;
+.button-container button {
+    width: 85px;
+    box-sizing: border-box;
+    padding: 6px 0;
+    font-size: 13px;
     font-weight: bold;
     border-radius: 6px;
     border: 1px solid rgba(0, 0, 0, 0.2);
     cursor: pointer;
+    text-align: center;
+}
+
+.button-container button:hover {
+    background: #ffffff;
 }
