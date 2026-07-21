@@ -1,6 +1,11 @@
 // Need to store this so toolbar remains same size when collapsed
-let TOOLBAR_WIDTH = document.getElementById('toggles').offsetWidth;
-document.getElementById('toggles').style.minWidth = TOOLBAR_WIDTH + 'px';
+let TOOLBAR_WIDTH = document.getElementById('toggles').offsetWidth + 'px';
+document.getElementById('toggles').style.minWidth = TOOLBAR_WIDTH;
+
+const tables = document.querySelectorAll('.matrix-table-container')
+tables.forEach((tab) => {
+    tab.style.width = TOOLBAR_WIDTH; 
+});
 
 // Unfurl toolbar
 const toggle_icon = document.getElementById('toggle-icon');

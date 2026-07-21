@@ -43,6 +43,7 @@ body, html {
     flex-direction: column;
     gap: 12px;
     z-index: 10;
+    overflow-y: auto;
 }
 
 #toggles h4 {
@@ -120,4 +121,64 @@ body, html {
 /* Rotate the chevron icon when collapsed */
 #toggle-icon.collapsed {
     transform: rotate(-90deg);
+}
+
+.matrix-table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.matrix-table p {
+    margin: 4px 0;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+}
+
+.matrix-table-container {
+    width: 100%;             
+    max-width: 200px;        
+    aspect-ratio: 1 / 1;     
+    overflow: auto;          
+}
+
+.matrix-table-container table {
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;     
+}
+
+.matrix-table-container td {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    text-align: center;
+    vertical-align: middle;
+    font-size: 12px;
+    padding: 2px;
+    contentEditable: true; 
+}
+
+#button-container {
+    position: sticky;
+    bottom: 0;
+    
+    display: flex;
+    gap: 8px;
+    padding: 8px; 
+    
+    /* Solid or semi-transparent background so matrix/inputs don't show through under buttons */
+    z-index: 5;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 6px; 
+}
+
+.action-buttons button {
+    flex: 1;
+    padding: 6px 12px;
+    font-weight: bold;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    cursor: pointer;
 }

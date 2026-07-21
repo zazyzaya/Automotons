@@ -1,13 +1,71 @@
+/**
+ * 
+ * @param {string} eid 
+ * @param {Tensor2D} mat 
+ */
+function set_matrix(eid, tf_mat) {
+    const mat = tf_mat.arraySync(); 
+    
+    const table = document.getElementById(eid); 
+    table.innerHTML = ""; 
+
+    // Write matrix to table 
+    for (let row=0; row<N_TYPES; row++) {
+        const t_row = document.createElement("tr"); 
+        
+        for (let col=0; col<N_TYPES; col++) {
+            const cell = document.createElement("td");
+            cell.textContent = mat[row][col]; 
+            cell.contentEditable = true; 
+
+            t_row.appendChild(cell);
+        }
+        table.appendChild(t_row); 
+    }
+}
+
+function get_matrix(eid) {
+    const table = document.getElementById(eid);
+    const rows = table.querySelectorAll('tr'); 
+    let mat = []; 
+
+    // Write matrix to table 
+    for (let i=0; i<N_TYPES; i++) {
+        const cells = rows[i].querySelectorAll('td'); 
+        let row = []; 
+
+        cells.forEach((cell) => {
+            const val = parseFloat(cell.textContent);
+            row.push(isNaN(val) ? 0.0 : val); 
+        });
+
+        mat.push(row); 
+    }
+
+    return tf_mat = tf.tensor2d(mat); 
+}
+
 function set_values() {
     document.getElementById('n-types').value = N_TYPES
     document.getElementById('n-particles').value = N_PARTICLES
     document.getElementById('friction').value = FRICTION
+
+    ATTRACTION = set_matrix('attraction', ATTRACTION); 
+    SIGHT = set_matrix('vision', SIGHT);
 }
 
 function get_values() {
     N_TYPES = parseInt(document.getElementById('n-types').value);
     N_PARTICLES = parseInt(document.getElementById('n-particles').value);
     FRICTION = parseFloat(document.getElementById('friction').value);
+
+    const newAttr = get_matrix('attraction', ATTRACTION); 
+    if (ATTRACTION) { ATTRACTION.dispose(); }
+    ATTRACTION = newAttr; 
+
+    const newSight = get_matrix('vision', SIGHT);
+    if (SIGHT) { SIGHT.dispose(); }
+    SIGHT = newSight; 
 }
 
 function expand_mats(newN, oldN, oldTensor, minVal, maxVal) {
