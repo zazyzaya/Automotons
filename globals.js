@@ -1,5 +1,5 @@
 let N_TYPES = 5;
-let N_PARTICLES = 2500;
+let N_PARTICLES = 500;
 let FRICTION = 0.25;
 let TIME = 0.0001;
 let REPEL_DIST = 0.005;
